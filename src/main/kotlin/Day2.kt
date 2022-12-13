@@ -1,39 +1,51 @@
 class Day2 {
     fun totalScore(aocInput: String?): Int? {
-        val opponent = mapOf(
-            "A" to RockPaperScissors.Rock,
-            "B" to RockPaperScissors.Paper,
-            "C" to RockPaperScissors.Scissors,
+        val playPoints = mapOf(
+            RockPaperScissors.Rock to 1,
+            RockPaperScissors.Paper to 2,
+            RockPaperScissors.Scissors to 3,
         )
 
-        val response = mapOf(
-            "X" to RockPaperScissors.Rock,
-            "Y" to RockPaperScissors.Paper,
-            "Z" to RockPaperScissors.Scissors,
+        val matchPoint = mapOf(
+            MatchPoint.Win to 6,
+            MatchPoint.Lost to 0,
+            MatchPoint.Draw to 3,
         )
 
-        val test = aocInput?.split("\n")?.map { round ->
-            val match = round.split(" ")
-            var score = 0
-            if (opponent[match[0]] == response[match[1]]) {
-                //score +=
+        return aocInput?.split("\n")?.sumOf { round ->
+            round.split(" ").let { play ->
+                if (play[0] == "A" && play[1] == "X") {
+                    matchPoint[MatchPoint.Draw]!!.plus(playPoints[RockPaperScissors.Rock]!!)
+                } else if (play[0] == "A" && play[1] == "Y") {
+                    matchPoint[MatchPoint.Win]!!.plus(playPoints[RockPaperScissors.Paper]!!)
+                } else if (play[0] == "A" && play[1] == "Z") {
+                    matchPoint[MatchPoint.Lost]!!.plus(playPoints[RockPaperScissors.Scissors]!!)
+                } else if (play[0] == "B" && play[1] == "X") {
+                    matchPoint[MatchPoint.Lost]!!.plus(playPoints[RockPaperScissors.Rock]!!)
+                } else if (play[0] == "B" && play[1] == "Y") {
+                    matchPoint[MatchPoint.Draw]!!.plus(playPoints[RockPaperScissors.Paper]!!)
+                } else if (play[0] == "B" && play[1] == "Z") {
+                    matchPoint[MatchPoint.Win]!!.plus(playPoints[RockPaperScissors.Scissors]!!)
+                } else if (play[0] == "C" && play[1] == "X") {
+                    matchPoint[MatchPoint.Win]!!.plus(playPoints[RockPaperScissors.Rock]!!)
+                } else if (play[0] == "C" && play[1] == "Y") {
+                    matchPoint[MatchPoint.Lost]!!.plus(playPoints[RockPaperScissors.Paper]!!)
+                } else {
+                    matchPoint[MatchPoint.Draw]!!.plus(playPoints[RockPaperScissors.Scissors]!!)
+                }
             }
-
         }
-
-//        A -> Rock
-//        B -> Paper
-//        C -> Scissors
-//
-//        X -> Rock
-//        Y -> Paper
-//        z -> Scissors
-
     }
 
     enum class RockPaperScissors {
         Rock,
         Paper,
         Scissors,
+    }
+
+    enum class MatchPoint {
+        Win,
+        Lost,
+        Draw,
     }
 }
